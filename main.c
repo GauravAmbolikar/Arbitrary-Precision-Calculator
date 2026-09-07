@@ -15,6 +15,24 @@ int main(int argc, char *argv[])
     }
 }
 
+int isNumber(char *str)
+{
+    int i = 0;
+
+    if(str[i] == '\0')
+        return FAILURE;
+    
+    while(str[i] != '\0')
+    {
+        if(str[i] < '0' && str[i] > '9')
+        {
+            return FAILURE;
+        }
+        i++;
+    }
+    return SUCCESS;
+}
+
 int validate_cla_inputs(int argc, char *argv[])
 {
     if(argc == 4)
@@ -29,4 +47,5 @@ int validate_cla_inputs(int argc, char *argv[])
     }
     return FAILURE;
 }
+
 

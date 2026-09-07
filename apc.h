@@ -11,7 +11,8 @@ typedef struct node
 } Dlist;
 
 /* Function declarations */
-int validate_cla_inputs(char *str);
+int isNumber(char *str);
+int validate_cla_inputs(int argc, char *argv[]);
 int addition(Dlist *head1, Dlist *head2, Dlist **result);
 int subtraction(Dlist *head1, Dlist *head2, Dlist **result);
 int multiplication(Dlist *head1, Dlist *head2, Dlist **result);
