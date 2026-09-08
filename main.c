@@ -6,7 +6,19 @@ int main(int argc, char *argv[])
     
     if(validate_cla_inputs(argc,argv))
     {
-        printf("Success");
+        Dlist *head1 = NULL;
+        Dlist *tail1 = NULL;
+
+        Dlist *head2 = NULL;
+        Dlist *tail2 = NULL;
+        if(slicing_input_dll(argv,&head1,&tail1,&head2,&tail2))
+        {
+            printf("Success\n");
+        }
+        else
+        {
+            printf("Failed to insert data into dll\n");
+        }
     }
     else
     {
