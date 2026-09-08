@@ -11,9 +11,30 @@ int main(int argc, char *argv[])
 
         Dlist *head2 = NULL;
         Dlist *tail2 = NULL;
+
+        Dlist *res_head = NULL;
+        Dlist *res_tail = NULL;
+        
         if(slicing_input_dll(argv,&head1,&tail1,&head2,&tail2))
         {
-            printf("Success\n");
+            printf("\nArbitrary Precision Calculator\n");
+            switch (argv[2][0])
+            {
+            case '+':
+                if(addition(head1, tail1, head2, tail2, &res_head, &res_tail) == 0)
+                    printf("Failed to perform addition\n");
+                print_res(res_head);
+                break;
+            case '-':
+                break;
+            case '*':
+                break;
+            case '/':
+                break;
+            default:
+                break;
+            }
+
         }
         else
         {
