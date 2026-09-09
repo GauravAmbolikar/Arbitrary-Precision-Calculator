@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<string.h>
 #include"apc.h"
 
 void print_res(Dlist *head)
@@ -10,7 +11,7 @@ void print_res(Dlist *head)
 	}
 	else
 	{
-	    printf("Result -> ");
+	    // printf("Result -> ");
 	    while (head)		
 	    {
 		    /* Printing the list */
@@ -21,6 +22,28 @@ void print_res(Dlist *head)
 	    }
     	printf("\n");
     }
+}
+
+int validate(char *argv[])
+{
+    if(strlen(argv[1]) > strlen(argv[3]))
+        return 1;
+    
+    if(strlen(argv[1]) == strlen(argv[3]))
+    {
+        int i = 0;
+        while(argv[1][i] != '\0')
+        {   
+            if((argv[1][i] - '0') > (argv[3][i] - '0'))
+                return 1;
+            if((argv[1][i] - '0') < (argv[3][i] - '0'))
+                return -1;
+            
+            i++;
+        }
+        return 0;
+    }
+    return -1;
 }
 
 int insert_at_last(int data, Dlist **head, Dlist **tail)
@@ -107,7 +130,7 @@ int insert_at_first(int data, Dlist **head, Dlist **tail)
     return SUCCESS;
 }
 
-int addition(Dlist *head1, Dlist *tail1, Dlist *head2, Dlist *tail2, Dlist **res_head, Dlist **res_tail)
+int addition(Dlist *tail1, Dlist *tail2, Dlist **res_head, Dlist **res_tail)
 {
     int carry = 0;
     int sum;
@@ -177,6 +200,48 @@ int addition(Dlist *head1, Dlist *tail1, Dlist *head2, Dlist *tail2, Dlist **res
     {
         if(insert_at_first(carry, res_head, res_tail) == 0)
             return FAILURE;
+    }
+
+    return SUCCESS;
+}
+
+int subtraction(Dlist *tail1, Dlist *tail2, Dlist **res_head, Dlist **res_tail)
+{
+    while(tail1 != NULL && tail2 != NULL)
+    {
+        if(tail1->data < tail2->data)
+        {
+            tail1->data += 10;
+
+            Dlist *temp = tail1->prev;
+
+            while(temp->data == 0)
+            {
+                temp->data = 9;
+                temp = temp->prev;
+            }
+
+            temp->data--;
+        }
+
+        if(insert_at_first(tail1->data - tail2->data, res_head, res_tail) == 0)
+        {
+            return FAILURE;
+        }
+
+        tail1 = tail1->prev;
+        tail2 = tail2->prev;
+    }
+
+    while(tail1 != NULL)
+    {
+        if(insert_at_first(tail1->data,
+                           res_head, res_tail) == 0)
+        {
+            return FAILURE;
+        }
+
+        tail1 = tail1->prev;
     }
 
     return SUCCESS;

@@ -21,11 +21,27 @@ int main(int argc, char *argv[])
             switch (argv[2][0])
             {
             case '+':
-                if(addition(head1, tail1, head2, tail2, &res_head, &res_tail) == 0)
+                if(addition(tail1, tail2, &res_head, &res_tail) == 0)
                     printf("Failed to perform addition\n");
                 print_res(res_head);
                 break;
             case '-':
+                if(validate(argv) == 1)
+                {
+                    if(subtraction(tail1, tail2, &res_head, &res_tail) == 0)
+                        printf("Failed to perform addition\n");
+                }
+                else if(validate(argv) == -1)
+                {
+                    if(subtraction(tail2, tail1, &res_head, &res_tail) == 0)
+                        printf("Failed to perform addition\n");
+                    printf("-");
+                }
+                else
+                {
+                    printf("0\n");
+                }
+                print_res(res_head);
                 break;
             case '*':
                 break;
