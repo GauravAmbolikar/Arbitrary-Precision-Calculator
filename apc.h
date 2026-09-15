@@ -21,7 +21,8 @@ int insert_at_first(int data, Dlist **head, Dlist **tail);
 int addition(Dlist *tail1, Dlist *tail2, Dlist **res_head, Dlist **res_tail);
 int validate(char *argv[]);
 int subtraction(Dlist *tail1, Dlist *tail2, Dlist **res_head, Dlist **res_tail);
-int multiplication(Dlist *head1, Dlist *head2, Dlist **result);
+int dl_delete_list(Dlist **head, Dlist **tail);
+int multiplication(Dlist *tail1, Dlist *tail2, Dlist **res_head, Dlist **res_tail);
 int division(Dlist *head1, Dlist *head2, Dlist **result);
 
 #endif

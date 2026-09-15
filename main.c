@@ -44,6 +44,9 @@ int main(int argc, char *argv[])
                 print_res(res_head);
                 break;
             case '*':
+                if(multiplication(tail1, tail2, &res_head, &res_tail) == 0)
+                    printf("Failed to perform multiplication\n");
+                print_res(res_head);
                 break;
             case '/':
                 break;
