@@ -24,26 +24,48 @@ void print_res(Dlist *head)
     }
 }
 
-int validate(char *argv[])
+int compare_lists(Dlist *head1, Dlist *head2)
 {
-    if(strlen(argv[1]) > strlen(argv[3]))
-        return 1;
-    
-    if(strlen(argv[1]) == strlen(argv[3]))
+    int count1 = 0;
+    int count2 = 0;
+
+    Dlist *temp1 = head1;
+    Dlist *temp2 = head2;
+
+    while (temp1 != NULL)
     {
-        int i = 0;
-        while(argv[1][i] != '\0')
-        {   
-            if((argv[1][i] - '0') > (argv[3][i] - '0'))
-                return 1;
-            if((argv[1][i] - '0') < (argv[3][i] - '0'))
-                return -1;
-            
-            i++;
-        }
-        return 0;
+        count1++;
+        temp1 = temp1->next;
     }
-    return -1;
+
+    while (temp2 != NULL)
+    {
+        count2++;
+        temp2 = temp2->next;
+    }
+
+    if (count1 > count2)
+        return 1;
+
+    if (count1 < count2)
+        return -1;
+
+    temp1 = head1;
+    temp2 = head2;
+
+    while (temp1 != NULL)
+    {
+        if (temp1->data > temp2->data)
+            return 1;
+
+        if (temp1->data < temp2->data)
+            return -1;
+
+        temp1 = temp1->next;
+        temp2 = temp2->next;
+    }
+
+    return 0;
 }
 
 int insert_at_last(int data, Dlist **head, Dlist **tail)
@@ -215,13 +237,14 @@ int subtraction(Dlist *tail1, Dlist *tail2, Dlist **res_head, Dlist **res_tail)
 
             Dlist *temp = tail1->prev;
 
-            while(temp->data == 0)
+            while(temp != NULL && temp->data == 0)
             {
                 temp->data = 9;
                 temp = temp->prev;
             }
 
-            temp->data--;
+            if(temp != NULL)
+                temp->data--;
         }
 
         if(insert_at_first(tail1->data - tail2->data, res_head, res_tail) == 0)
@@ -241,6 +264,16 @@ int subtraction(Dlist *tail1, Dlist *tail2, Dlist **res_head, Dlist **res_tail)
         }
 
         tail1 = tail1->prev;
+    }
+
+    while (*res_head != NULL && (*res_head)->data == 0 && (*res_head)->next != NULL)
+    {
+        Dlist *temp = *res_head;
+
+        *res_head = (*res_head)->next;
+        (*res_head)->prev = NULL;
+
+        free(temp);
     }
 
     return SUCCESS;
@@ -321,6 +354,76 @@ int multiplication(Dlist *tail1, Dlist *tail2, Dlist **res_head, Dlist **res_tai
 
         shift++;
         temp2 = temp2->prev;
+    }
+
+    return SUCCESS;
+}
+
+int division(Dlist *head1, Dlist *tail1, Dlist *head2, Dlist *tail2, Dlist **res_head, Dlist **res_tail)
+{
+    Dlist *rem_h = NULL;
+    Dlist *rem_t = NULL;
+
+    Dlist *temp_h = NULL;
+    Dlist *temp_t = NULL;
+
+    int count;
+
+    if (head2 != NULL && head2->data == 0 && head2->next == NULL)
+    {
+        printf("ERROR: Division by zero is not possible\n");
+        return FAILURE;
+    }
+
+    while (head1 != NULL)
+    {
+        count = 0;
+
+        if (rem_h != NULL &&
+            rem_h->data == 0 &&
+            rem_h->next == NULL)
+        {
+            rem_h->data = head1->data;
+        }
+        else
+        {
+            insert_at_last(head1->data, &rem_h, &rem_t);
+        }
+
+        while (compare_lists(rem_h, head2) >= 0)
+        {
+            temp_h = NULL;
+            temp_t = NULL;
+
+            if (subtraction(rem_t, tail2, &temp_h, &temp_t) == 0)
+            {
+                printf("Failed to perform subtraction\n");
+                return FAILURE;
+            }
+
+            dl_delete_list(&rem_h, &rem_t);
+
+            rem_h = temp_h;
+            rem_t = temp_t;
+
+            count++;
+        }
+
+        insert_at_last(count, res_head, res_tail);
+
+        head1 = head1->next;
+    }
+
+    while (*res_head != NULL &&
+           (*res_head)->data == 0 &&
+           (*res_head)->next != NULL)
+    {
+        Dlist *temp = *res_head;
+
+        *res_head = (*res_head)->next;
+        (*res_head)->prev = NULL;
+
+        free(temp);
     }
 
     return SUCCESS;

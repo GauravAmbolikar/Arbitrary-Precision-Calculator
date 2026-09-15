@@ -26,15 +26,21 @@ int main(int argc, char *argv[])
                 print_res(res_head);
                 break;
             case '-':
-                if(validate(argv) == 1)
+                if(compare_lists(head1, head2) == 1)
                 {
                     if(subtraction(tail1, tail2, &res_head, &res_tail) == 0)
-                        printf("Failed to perform addition\n");
+                    {
+                        printf("Failed to perform subtraction\n");
+                        return 0;
+                    }
                 }
-                else if(validate(argv) == -1)
+                else if(compare_lists(head1, head2) == -1)
                 {
                     if(subtraction(tail2, tail1, &res_head, &res_tail) == 0)
-                        printf("Failed to perform addition\n");
+                    {
+                        printf("Failed to perform subtraction\n");
+                        return 0;
+                    }
                     printf("-");
                 }
                 else
@@ -45,10 +51,19 @@ int main(int argc, char *argv[])
                 break;
             case '*':
                 if(multiplication(tail1, tail2, &res_head, &res_tail) == 0)
+                {
                     printf("Failed to perform multiplication\n");
+                    return 0;
+                }
                 print_res(res_head);
                 break;
             case '/':
+                if(division(head1, tail1, head2, tail2, &res_head, &res_tail) == 0)
+                {
+                    printf("Failed to perform division\n");
+                    return 0;
+                }
+                print_res(res_head);
                 break;
             default:
                 break;
@@ -65,6 +80,8 @@ int main(int argc, char *argv[])
         printf("Invalid Arguments\n");
         printf("Usage: ./a.out <num1> <operator> <num2>\n");
     }
+
+    return 0;
 }
 
 int isNumber(char *str)

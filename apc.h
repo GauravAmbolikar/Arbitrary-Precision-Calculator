@@ -19,10 +19,10 @@ void print_res(Dlist *head);
 int insert_at_last(int data, Dlist **head, Dlist **tail);
 int insert_at_first(int data, Dlist **head, Dlist **tail);
 int addition(Dlist *tail1, Dlist *tail2, Dlist **res_head, Dlist **res_tail);
-int validate(char *argv[]);
+int compare_lists(Dlist *head1, Dlist *head2);
 int subtraction(Dlist *tail1, Dlist *tail2, Dlist **res_head, Dlist **res_tail);
 int dl_delete_list(Dlist **head, Dlist **tail);
 int multiplication(Dlist *tail1, Dlist *tail2, Dlist **res_head, Dlist **res_tail);
-int division(Dlist *head1, Dlist *head2, Dlist **result);
+int division(Dlist *head1,Dlist *tail1, Dlist *head2, Dlist *tail2, Dlist **res_head, Dlist **res_tail);
 
 #endif
