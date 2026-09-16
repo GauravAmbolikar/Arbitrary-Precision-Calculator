@@ -3,25 +3,66 @@
 #include<string.h>
 #include"apc.h"
 
-void print_res(Dlist *head)
-{
-    if (head == NULL)
-	{
-		printf("INFO : List is empty\n");
-	}
-	else
-	{
-	    // printf("Result -> ");
-	    while (head)		
-	    {
-		    /* Printing the list */
-		    printf("%d", head -> data);
+#include <stdio.h>
+#include <string.h>
 
-		    /* Travering in forward direction */
-		    head = head -> next;
-	    }
-    	printf("\n");
+void print_res(Dlist *head, char *num1, char operation, char *num2, char sign_res)
+{
+    int len1 = strlen(num1);
+    int len2 = strlen(num2);
+    int result_len = 0;
+    int width;
+    int i;
+
+    Dlist *temp = head;
+
+    while (temp != NULL)
+    {
+        result_len++;
+        temp = temp->next;
     }
+
+    if (sign_res == '-')
+        result_len++;
+
+    width = len1;
+
+    if (len2 + 2 > width)
+        width = len2 + 2;
+
+    if (result_len > width)
+        width = result_len;
+
+    printf("\n");
+
+    for (i = 0; i < (width - 30) / 2 + 4; i++)
+        printf(" ");
+
+    printf("Arbitrary Precision Calculator\n\n");
+
+    printf("%*s%s\n", width - len1 + 4, "", num1);
+
+    printf("%*s%c %s\n", width - (len2 + 2) + 4, "", operation, num2);
+
+    printf("%*s", 4, "");
+
+    for (i = 0; i < width; i++)
+        printf("-");
+
+    printf("\n");
+
+    printf("%*s", width - result_len + 4, "");
+
+    if (sign_res == '-')
+        printf("-");
+
+    while (head != NULL)
+    {
+        printf("%d", head->data);
+        head = head->next;
+    }
+
+    printf("\n\n");
 }
 
 int compare_lists(Dlist *head1, Dlist *head2)
@@ -107,9 +148,12 @@ int slicing_input_dll(char *argv[], Dlist **head1, Dlist **tail1, Dlist **head2,
     int i = 0;
     while(argv[1][i] != '\0')
     {
-        if(insert_at_last((argv[1][i] - '0'),head1,tail1) == 0)
+        if(argv[1][i] >= '0' && argv[1][i] <= '9')
         {
-            return FAILURE;
+            if(insert_at_last((argv[1][i] - '0'),head1,tail1) == 0)
+            {
+                return FAILURE;
+            }
         }
         i++;
     }
@@ -117,9 +161,12 @@ int slicing_input_dll(char *argv[], Dlist **head1, Dlist **tail1, Dlist **head2,
     i = 0;
     while(argv[3][i] != '\0')
     {
-        if(insert_at_last((argv[3][i] - '0'),head2,tail2) == 0)
+        if(argv[3][i] >= '0' && argv[3][i] <= '9')
         {
-            return FAILURE;
+            if(insert_at_last((argv[3][i] - '0'),head2,tail2) == 0)
+            {
+                return FAILURE;
+            }
         }
         i++;
     }
@@ -150,6 +197,19 @@ int insert_at_first(int data, Dlist **head, Dlist **tail)
     *head = newNode;
 
     return SUCCESS;
+}
+
+void signExtraction(char *argv[], char *sign1, char *sign2)
+{
+    if (argv[1][0] == '-')
+        *sign1 = '-';
+    else
+        *sign1 = '+';
+
+    if (argv[3][0] == '-')
+        *sign2 = '-';
+    else
+        *sign2 = '+';
 }
 
 int addition(Dlist *tail1, Dlist *tail2, Dlist **res_head, Dlist **res_tail)

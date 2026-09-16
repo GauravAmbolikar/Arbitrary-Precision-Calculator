@@ -12,10 +12,11 @@ typedef struct node
 } Dlist;
 
 /* Function declarations */
+void signExtraction(char *argv[], char *sign1, char *sign2);
 int isNumber(char *str);
 int validate_cla_inputs(int argc, char *argv[]);
 int slicing_input_dll(char *argv[], Dlist **head1, Dlist **tail1, Dlist **head2, Dlist **tail2);
-void print_res(Dlist *head);
+void print_res(Dlist *head, char *num1, char operation, char *num2, char sign_res);
 int insert_at_last(int data, Dlist **head, Dlist **tail);
 int insert_at_first(int data, Dlist **head, Dlist **tail);
 int addition(Dlist *tail1, Dlist *tail2, Dlist **res_head, Dlist **res_tail);
